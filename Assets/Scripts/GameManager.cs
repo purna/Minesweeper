@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 
      // Variables to handle the game state.
   private int startingLives = 3;
-  public int livesRemaining;
+  public static int livesRemaining;
 
   private bool playing = true;
 
@@ -139,6 +139,12 @@ public class GameManager : MonoBehaviour {
 
   }
 
+  public void CheckGameOverFlagged(int countflaggedTile) {
+       if (countflaggedTile == numMines){
+          CheckGameOver();
+        }
+  }
+
   public void CheckGameOver() {
     // If there are numMines left active then we're done.
     int count = 0;
@@ -147,8 +153,6 @@ public class GameManager : MonoBehaviour {
         count++;
       }
     }
-Debug.Log("count!" + count);
-Debug.Log("mines!" + numMines);
 
     if (count == numMines) {
       // Flag and disable everything, we're done.
@@ -159,6 +163,8 @@ Debug.Log("mines!" + numMines);
       foreach (Tile tile in tiles) {
         tile.active = false;
         tile.SetFlaggedIfMine();
+
+        
       }
     }
   }

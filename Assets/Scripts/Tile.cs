@@ -19,6 +19,8 @@ public class Tile : MonoBehaviour {
   public bool isMine = false;
   public int mineCount = 0;
 
+  public static int countflaggedTile = 0; 
+
 
   void Awake() {
     // This should always exist due to the RequireComponent helper.
@@ -31,14 +33,23 @@ public class Tile : MonoBehaviour {
       if (Input.GetMouseButtonDown(0)) {
         // If left click reveal the tile contents.
         ClickedTile();
+
       } else if (Input.GetMouseButtonDown(1)) {
         // If right click toggle flag on/off.
         flagged = !flagged;
         if (flagged) {
           spriteRenderer.sprite = flaggedTile;
+          countflaggedTile = countflaggedTile+1;
+          //Debug.Log("flagged!" + countflaggedTile);
         } else {
           spriteRenderer.sprite = unclickedTile;
+          countflaggedTile = countflaggedTile-1;
+          //Debug.Log("unflagged!" + countflaggedTile);
         }
+        gameManager.CheckGameOverFlagged(countflaggedTile);
+   
+
+         
       }
     } else {
       // If you're pressing both mouse buttons.
@@ -87,10 +98,7 @@ public class Tile : MonoBehaviour {
 
   // Helper function to flag remaning mines on game completion.
   public void SetFlaggedIfMine() {
-    if (isMine) {
       flagged = true;
       spriteRenderer.sprite = flaggedTile;
-    }
   }
-
 }
