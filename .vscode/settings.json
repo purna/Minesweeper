@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Minesweeper.sln"
+    "dotnet.defaultSolution": "Minesweeper.sln",
+    "FSharp.suggestGitignore": false
 }

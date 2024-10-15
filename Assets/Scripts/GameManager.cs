@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
   [SerializeField] private Transform tilePrefab;
   [SerializeField] private Transform gameHolder;
+[SerializeField] private TMPro.TextMeshProUGUI livesText;
+
 
   private List<Tile> tiles = new();
 
@@ -12,10 +14,24 @@ public class GameManager : MonoBehaviour {
   private int height;
   private int numMines;
 
+     // Variables to handle the game state.
+  private int startingLives = 3;
+  public int livesRemaining;
+
+  private bool playing = true;
+
+
   private readonly float tileSize = 0.5f;
 
+
+  public GameObject panel;
+  
   // Start is called before the first frame update
   void Start() {
+
+    livesRemaining = startingLives;
+    livesText.text = $"{livesRemaining}";
+
     CreateGameBoard(9, 9, 10); // Easy
     // CreateGameBoard(16, 16, 40); // Intermediate
     // CreateGameBoard(30, 16, 99); // Expert
@@ -116,6 +132,11 @@ public class GameManager : MonoBehaviour {
     foreach (Tile tile in tiles) {
       tile.ShowGameOverState();
     }
+
+    panel.SetActive(true);
+     // Get a reference to the GameManager
+    RemoveLife(); // Remove a life
+
   }
 
   public void CheckGameOver() {
@@ -152,5 +173,19 @@ public class GameManager : MonoBehaviour {
       ClickNeighbours(tile);
     }
   }
+
+  // Called from LoseLife whenever it detects a block has fallen off.
+  public void RemoveLife() {
+    // Update the lives remaining UI element.
+    livesRemaining = Mathf.Max(livesRemaining - 1, 0);
+    livesText.text = $"{livesRemaining}";
+    // Check for end of game.
+    if (livesRemaining == 0) {
+      playing = false;
+      panel.SetActive(true);
+
+    }
+  }
+
 }
 
