@@ -147,9 +147,15 @@ public class GameManager : MonoBehaviour {
         count++;
       }
     }
+Debug.Log("count!" + count);
+Debug.Log("mines!" + numMines);
+
     if (count == numMines) {
       // Flag and disable everything, we're done.
       Debug.Log("Winner!");
+
+      panel.SetActive(true);
+
       foreach (Tile tile in tiles) {
         tile.active = false;
         tile.SetFlaggedIfMine();
